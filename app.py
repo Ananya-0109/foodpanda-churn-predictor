@@ -126,3 +126,4 @@ if predict_button:
     # Visual probability bar
     st.progress(float(probability))
 ```
+
