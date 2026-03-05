@@ -8,10 +8,18 @@ model = pickle.load(open("churn_model.pkl", "rb"))
 st.set_page_config(page_title="Customer Churn Predictor", page_icon="🍔")
 
 st.markdown(
-    "<h1 style='white-space: nowrap;'>🍔 Food Delivery Customer Churn Prediction</h1>",
+    """
+    <h1 style='white-space: nowrap; margin-bottom:10px;'>
+        🍔 Food Delivery Customer Churn Prediction
+    </h1>
+    """,
     unsafe_allow_html=True
 )
-st.write("---")
+
+st.markdown(
+    "<h2 style='margin-top:0px;'>Customer Information</h2>",
+    unsafe_allow_html=True
+)
 
 # ---------------- USER INPUT ---------------- #
 
@@ -126,5 +134,6 @@ if st.button("🔍 Predict Churn"):
     st.progress(float(probability))
 
     st.write(f"**Risk Level:** {risk}")
+
 
 
