@@ -1,10 +1,13 @@
-🍔 Food Delivery Customer Churn Prediction
+##🍔 Food Delivery Customer Churn Prediction
 
 This project is a Machine Learning web application that predicts whether a customer of a food delivery platform is likely to churn (stop using the service) based on their behavior and engagement with the platform.
 
 The model analyzes factors such as order frequency, loyalty points, customer ratings, and recency of orders to estimate the probability of churn.
 
 The application is deployed using Streamlit, allowing users to interactively input customer data and receive real-time churn predictions.
+
+
+WEB APP LINK- https://foodpanda-churn-predictor-khqrvxutpfpayu6ey25ua5.streamlit.app/#churn-probability-0-48
 
 📊 Problem Statement
 
