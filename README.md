@@ -1,4 +1,4 @@
-##🍔 Food Delivery Customer Churn Prediction
+🍔 Food Delivery Customer Churn Prediction
 
 This project is a Machine Learning web application that predicts whether a customer of a food delivery platform is likely to churn (stop using the service) based on their behavior and engagement with the platform.
 
