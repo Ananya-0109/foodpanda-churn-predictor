@@ -80,6 +80,7 @@ Streamlit
 Pickle
 
 📁 Project Structure
+
 Food-Delivery-Churn-Prediction
 │
 ├── app.py                # Streamlit web application
@@ -87,12 +88,17 @@ Food-Delivery-Churn-Prediction
 ├── requirements.txt      # Python dependencies
 ├── dataset.csv           # Dataset used for training
 └── README.md             # Project documentation
+
+
 🚀 How to Run the Project
 1️⃣ Clone the repository
+
 git clone https://github.com/yourusername/food-delivery-churn-prediction.git
 2️⃣ Install dependencies
+
 pip install -r requirements.txt
 3️⃣ Run the Streamlit app
+
 streamlit run app.py
 💡 Example Use Case
 
