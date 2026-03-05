@@ -98,4 +98,5 @@ if st.button("Predict Churn"):
         st.success("✅ Customer will stay")
 
     st.write(f"**Churn Probability:** {probability*100:.2f}%")
+
     st.write(f"**Risk Level:** {risk}")
