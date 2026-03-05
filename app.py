@@ -7,15 +7,10 @@ model = pickle.load(open("churn_model.pkl", "rb"))
 
 st.set_page_config(page_title="Customer Churn Predictor", page_icon="🍔")
 
-st.markdown("""
-<h1 style='white-space:nowrap; margin-bottom:5px;'>
-🍔 Food Delivery Customer Churn Prediction
-</h1>
-
-<p style='font-size:16px; margin-top:0px; margin-left:40px;'>
-Enter customer details to predict whether a customer will churn.
-</p>
-""", unsafe_allow_html=True)
+st.markdown(
+    "<h1 style='white-space: nowrap;'>🍔 Food Delivery Customer Churn Prediction</h1>",
+    unsafe_allow_html=True
+)
 st.write("---")
 
 # ---------------- USER INPUT ---------------- #
