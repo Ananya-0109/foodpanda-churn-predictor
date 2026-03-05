@@ -5,14 +5,12 @@ import pandas as pd
 # Load trained model
 model = pickle.load(open("churn_model.pkl", "rb"))
 
-st.set_page_config(page_title="Customer Churn Predictor", page_icon="🍔")
+st.set_page_config(page_title="Customer Churn Predictor", page_icon="🍔", layout="centered")
 
 st.title("🍔 Food Delivery Customer Churn Prediction")
 st.write("Enter customer details to predict whether a customer will churn.")
 
 st.write("---")
-
-# ---------------- USER INPUT ---------------- #
 
 st.subheader("Customer Information")
 
@@ -33,23 +31,6 @@ with col1:
         max_value=60,
         value=25,
         step=1
-    )
-
-    # ⭐ Swiggy-style rating
-    st.markdown("### Customer Rating")
-
-    rating = st.slider(
-        "",
-        min_value=1,
-        max_value=5,
-        value=3
-    )
-
-    stars = "⭐" * rating + "☆" * (5 - rating)
-
-    st.markdown(
-        f"<h2 style='color:#ffb400'>{stars}</h2>",
-        unsafe_allow_html=True
     )
 
 with col2:
@@ -85,6 +66,27 @@ with col2:
 
 st.write("---")
 
+# ⭐ STAR RATING SYSTEM
+
+st.markdown("### ⭐ Customer Rating")
+
+star_cols = st.columns(5)
+
+if "rating" not in st.session_state:
+    st.session_state.rating = 3
+
+for i in range(5):
+    with star_cols[i]:
+        if st.button("⭐", key=i):
+            st.session_state.rating = i + 1
+
+rating = st.session_state.rating
+
+stars_display = "⭐" * rating + "☆" * (5 - rating)
+st.markdown(f"<h3 style='color:#ffb400'>{stars_display}</h3>", unsafe_allow_html=True)
+
+st.write("---")
+
 # ---------------- PREDICTION ---------------- #
 
 if st.button("🔍 Predict Churn"):
@@ -107,16 +109,13 @@ if st.button("🔍 Predict Churn"):
 
     input_df = pd.DataFrame(input_dict)
 
-    # Ensure same feature order as training
     model_columns = model.feature_names_in_
     input_df = input_df.reindex(columns=model_columns, fill_value=0)
 
-    # Predict probability
     probability = model.predict_proba(input_df)[0][1]
 
     prediction = 1 if probability > 0.5 else 0
 
-    # Risk category
     if probability < 0.3:
         risk = "Low Risk"
     elif probability < 0.6:
@@ -131,8 +130,6 @@ if st.button("🔍 Predict Churn"):
     else:
         st.success("✅ Customer will stay")
 
-    st.write(f"### Churn Probability: {probability*100:.2f}%")
-
+    st.write(f"**Churn Probability:** {probability*100:.2f}%")
     st.progress(float(probability))
-
     st.write(f"**Risk Level:** {risk}")
