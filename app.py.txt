@@ -1,0 +1,60 @@
+# app.py
+import streamlit as st
+import pickle
+import numpy as np
+import pandas as pd
+
+# Load trained model
+model = pickle.load(open("churn_model.pkl", "rb"))
+
+st.title("🍔 Food Delivery Customer Churn Prediction")
+st.write("Enter customer details to predict churn")
+
+# ----- User Inputs -----
+gender = st.selectbox("Gender", ["Male", "Female"])
+city = st.selectbox("City", ["Bangalore", "Delhi", "Mumbai", "Other"])
+payment_method = st.selectbox("Payment Method", ["Credit Card", "Debit Card", "UPI", "Cash", "Other"])
+
+age = st.slider("Age", 18, 60)
+order_frequency = st.slider("Order Frequency per Month", 0, 30)
+loyalty_points = st.slider("Loyalty Points", 0, 1000)
+days_since_last_order = st.slider("Days Since Last Order", 0, 60)
+rating = st.slider("Rating", 1.0, 5.0)
+
+# ----- Predict Churn -----
+if st.button("Predict Churn"):
+    
+    # Create a DataFrame with one row (like your training data)
+    input_dict = {
+        "age": [age],
+        "order_frequency": [order_frequency],
+        "loyalty_points": [loyalty_points],
+        "days_since_last_order": [days_since_last_order],
+        "rating": [rating],
+        "gender_Male": [1 if gender=="Male" else 0],
+        "city_Bangalore": [1 if city=="Bangalore" else 0],
+        "city_Delhi": [1 if city=="Delhi" else 0],
+        "city_Mumbai": [1 if city=="Mumbai" else 0],
+        "payment_method_Credit Card": [1 if payment_method=="Credit Card" else 0],
+        "payment_method_Debit Card": [1 if payment_method=="Debit Card" else 0],
+        "payment_method_UPI": [1 if payment_method=="UPI" else 0],
+        "payment_method_Other": [1 if payment_method=="Other" else 0],
+        # Note: Drop the first category for dummies to avoid dummy trap
+    }
+    
+    input_df = pd.DataFrame(input_dict)
+    
+    # Ensure columns order matches your model training
+    model_columns = model.feature_names_in_  # scikit-learn keeps the training columns
+    input_df = input_df.reindex(columns=model_columns, fill_value=0)
+    
+    # Make prediction
+    prediction = model.predict(input_df)[0]
+    probability = model.predict_proba(input_df)[0][1]  # probability of churn
+    
+    # Show results
+    st.write("---")
+    if prediction == 1:
+        st.error(f"⚠ Customer is likely to churn (Probability: {probability*100:.2f}%)")
+    else:
+        st.success(f"✅ Customer will stay (Probability of churn: {probability*100:.2f}%)")
