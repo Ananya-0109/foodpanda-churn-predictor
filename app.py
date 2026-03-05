@@ -133,3 +133,4 @@ st.write(f"**Risk Level:** {risk}")
 # Visual probability bar
 st.progress(float(probability))
 ```
+
