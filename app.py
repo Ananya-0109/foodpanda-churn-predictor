@@ -68,14 +68,12 @@ st.write("---")
 
 # ⭐ STAR RATING SYSTEM
 
-# ⭐ Zomato-style star rating
 st.markdown("### ⭐ Customer Rating")
 
-# initialize rating
 if "rating" not in st.session_state:
     st.session_state.rating = 0
 
-star_cols = st.columns(5)
+star_cols = st.columns([0.3,0.3,0.3,0.3,0.3])
 
 for i in range(5):
     with star_cols[i]:
@@ -130,4 +128,5 @@ if st.button("🔍 Predict Churn"):
     st.write(f"**Churn Probability:** {probability*100:.2f}%")
     st.progress(float(probability))
     st.write(f"**Risk Level:** {risk}")
+
 
