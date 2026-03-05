@@ -15,6 +15,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+st.write("---")  
 
 
 # ---------------- USER INPUT ---------------- #
@@ -130,6 +131,7 @@ if st.button("🔍 Predict Churn"):
     st.progress(float(probability))
 
     st.write(f"**Risk Level:** {risk}")
+
 
 
 
