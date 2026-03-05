@@ -5,54 +5,89 @@ import pandas as pd
 # Load trained model
 model = pickle.load(open("churn_model.pkl", "rb"))
 
+st.set_page_config(page_title="Customer Churn Predictor", page_icon="🍔")
+
 st.title("🍔 Food Delivery Customer Churn Prediction")
 st.write("Enter customer details to predict whether a customer will churn.")
 
-st.write("### Customer Information")
+st.write("---")
 
-# -------- USER INPUTS --------
+# ---------------- USER INPUT ---------------- #
 
-gender = st.selectbox("Gender", ["Male", "Female"])
+st.subheader("Customer Information")
 
-city = st.selectbox(
-    "City",
-    ["Bangalore", "Delhi", "Mumbai", "Other"]
-)
+col1, col2 = st.columns(2)
 
-payment_method = st.selectbox(
-    "Payment Method",
-    ["Credit Card", "Debit Card", "UPI", "Cash", "Other"]
-)
+with col1:
 
-age = st.slider("Age", 18, 60)
+    gender = st.selectbox("Gender", ["Male", "Female"])
 
-order_frequency = st.slider(
-    "Order Frequency per Month",
-    0,
-    30
-)
+    city = st.selectbox(
+        "City",
+        ["Bangalore", "Delhi", "Mumbai", "Other"]
+    )
 
-loyalty_points = st.slider(
-    "Loyalty Points",
-    0,
-    1000
-)
+    age = st.number_input(
+        "Age",
+        min_value=18,
+        max_value=60,
+        value=25,
+        step=1
+    )
 
-days_since_last_order = st.slider(
-    "Days Since Last Order",
-    0,
-    60
-)
+    # ⭐ Swiggy-style rating
+    st.markdown("### Customer Rating")
 
-# ⭐ Rating fixed (no decimals)
-rating = st.selectbox(
-    "Customer Rating",
-    [1, 2, 3, 4, 5]
-)
+    rating = st.slider(
+        "",
+        min_value=1,
+        max_value=5,
+        value=3
+    )
 
-# -------- PREDICTION --------
+    stars = "⭐" * rating + "☆" * (5 - rating)
 
-if st.button("Predict Churn"):
+    st.markdown(
+        f"<h2 style='color:#ffb400'>{stars}</h2>",
+        unsafe_allow_html=True
+    )
+
+with col2:
+
+    payment_method = st.selectbox(
+        "Payment Method",
+        ["Credit Card", "Debit Card", "UPI", "Cash", "Other"]
+    )
+
+    order_frequency = st.number_input(
+        "Order Frequency per Month",
+        min_value=0,
+        max_value=30,
+        value=5,
+        step=1
+    )
+
+    loyalty_points = st.number_input(
+        "Loyalty Points",
+        min_value=0,
+        max_value=1000,
+        value=100,
+        step=10
+    )
+
+    days_since_last_order = st.number_input(
+        "Days Since Last Order",
+        min_value=0,
+        max_value=60,
+        value=7,
+        step=1
+    )
+
+st.write("---")
+
+# ---------------- PREDICTION ---------------- #
+
+if st.button("🔍 Predict Churn"):
 
     input_dict = {
         "age": [age],
@@ -76,10 +111,9 @@ if st.button("Predict Churn"):
     model_columns = model.feature_names_in_
     input_df = input_df.reindex(columns=model_columns, fill_value=0)
 
-    # Get churn probability
+    # Predict probability
     probability = model.predict_proba(input_df)[0][1]
 
-    # Prediction based on probability
     prediction = 1 if probability > 0.5 else 0
 
     # Risk category
@@ -90,12 +124,15 @@ if st.button("Predict Churn"):
     else:
         risk = "High Risk"
 
-    st.write("---")
+    st.subheader("Prediction Result")
 
     if prediction == 1:
         st.error("⚠ Customer is likely to churn")
     else:
         st.success("✅ Customer will stay")
 
-    st.write(f"**Churn Probability:** {probability*100:.2f}%")
+    st.write(f"### Churn Probability: {probability*100:.2f}%")
+
+    st.progress(float(probability))
+
     st.write(f"**Risk Level:** {risk}")
