@@ -16,10 +16,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    "<h2 style='margin-top:0px;'>Customer Information</h2>",
-    unsafe_allow_html=True
-)
 
 # ---------------- USER INPUT ---------------- #
 
@@ -134,6 +130,7 @@ if st.button("🔍 Predict Churn"):
     st.progress(float(probability))
 
     st.write(f"**Risk Level:** {risk}")
+
 
 
 
