@@ -68,24 +68,21 @@ st.write("---")
 
 # ⭐ STAR RATING SYSTEM
 
+# ⭐ Zomato-style star rating
 st.markdown("### ⭐ Customer Rating")
+
+# initialize rating
+if "rating" not in st.session_state:
+    st.session_state.rating = 0
 
 star_cols = st.columns(5)
 
-if "rating" not in st.session_state:
-    st.session_state.rating = 3
-
 for i in range(5):
     with star_cols[i]:
-        if st.button("⭐", key=i):
+        if st.button("⭐" if i < st.session_state.rating else "☆", key=f"star{i}"):
             st.session_state.rating = i + 1
 
 rating = st.session_state.rating
-
-stars_display = "⭐" * rating + "☆" * (5 - rating)
-st.markdown(f"<h3 style='color:#ffb400'>{stars_display}</h3>", unsafe_allow_html=True)
-
-st.write("---")
 
 # ---------------- PREDICTION ---------------- #
 
@@ -133,3 +130,4 @@ if st.button("🔍 Predict Churn"):
     st.write(f"**Churn Probability:** {probability*100:.2f}%")
     st.progress(float(probability))
     st.write(f"**Risk Level:** {risk}")
+
